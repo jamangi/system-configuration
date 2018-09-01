@@ -1,0 +1,6 @@
+#run python app using uwsgi
+uwsgi --plugin http,python3 --http :8085 --wsgi-file test2.py
+#test2.py
+def application(env, start_response):
+    start_response('200 OK', [('Content-Type','text/html')])
+    return [b"Hello World"]
