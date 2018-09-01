@@ -95,3 +95,26 @@ server {
      }
 
 }
+
+#server {
+#     listen 8083;
+#     listen [::]:8083;
+#     location / {
+#     	      root /home/vagrant/test/experiment;
+#	      try_files $uri =404;
+#     }
+#}
+
+server {
+     listen 8083;
+     listen [::]:8083;
+     location / {
+     	      root /home/vagrant/system-configuration;
+	      try_files $uri @app;
+     }
+     location @app {
+     	      include uwsgi_params;
+	      uwsgi_pass 0.0.0.0:8084;
+     }
+}
+

@@ -1,6 +1,31 @@
 #run python app using uwsgi
 uwsgi --plugin http,python3 --http :8085 --wsgi-file test2.py
+
 #test2.py
 def application(env, start_response):
     start_response('200 OK', [('Content-Type','text/html')])
     return [b"Hello World"]
+
+#/etc/uwsgi/apps-available/uwsgi.ini
+[uwsgi]
+socket = 0.0.0.0:8084
+chdir = /home/vagrant/system-configuration/
+wsgi-file = test.py
+processes = 4
+threads = 2
+callable = ap
+
+#/etc/nginx/sites-available/default
+server {
+     listen 8083;
+     listen [::]:8083;
+     location / {
+     	      root /home/vagrant/system-configuration;
+	      try_files $uri @app;
+     }
+     location @app {
+     	      include uwsgi_params;
+	      uwsgi_pass 0.0.0.0:8084;
+     }
+}
+
