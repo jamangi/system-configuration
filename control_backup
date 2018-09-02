@@ -1,0 +1,12 @@
+server {
+       listen 80 default_server;
+       listen [::]:80 default_server;
+
+       server_name _;
+       location / {
+       		root /home/ubuntu/apis;
+		try_files $uri $uri/ =404;
+
+       }
+		
+}
